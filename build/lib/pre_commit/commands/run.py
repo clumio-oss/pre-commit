@@ -357,9 +357,9 @@ def run(
         environ['PRE_COMMIT_FROM_REF'] = args.from_ref
         environ['PRE_COMMIT_TO_REF'] = args.to_ref
 
-    if args.remote_branch and args.local_branch:         # CENG-1675
-        environ['PRE_COMMIT_REMOTE_REF'] = args.remote_branch
-        environ['PRE_COMMIT_LOCAL_REF'] = args.local_branch
+        if args.remote_branch and args.local_branch:         # CENG-1675
+            environ['PRE_COMMIT_REMOTE_REF'] = args.remote_branch
+            environ['PRE_COMMIT_LOCAL_REF'] = args.local_branch
 
     if args.remote_name and args.remote_url:
         environ['PRE_COMMIT_REMOTE_NAME'] = args.remote_name
