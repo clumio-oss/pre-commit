@@ -1,3 +1,9 @@
+2.7.2 - 2020-09-02
+==================
+
+### Features
+- Made remote ref available from `git push` to the pre-push hooks
+
 2.7.1 - 2020-08-23
 ==================
 
