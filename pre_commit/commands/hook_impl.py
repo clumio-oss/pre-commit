@@ -111,12 +111,10 @@ def _pre_push_ns(
 
     for line in stdin.decode().splitlines():
         local_ref, local_sha, remote_ref, remote_sha = line.split() # CENG-1675
-        print(local_ref, local_sha, remote_ref, remote_sha)
+        
         if local_sha == Z40:
-            print('local sha zeo')
             continue
         elif remote_sha != Z40 and _rev_exists(remote_sha):
-            print('remote sha is non zero')
             return _ns(
                 'pre-push', color,
                 from_ref=remote_sha, to_ref=local_sha,
@@ -130,10 +128,13 @@ def _pre_push_ns(
                 '--not', f'--remotes={remote_name}',
             )).decode().strip()
             if not ancestors:
-                print('no ancestor')
-                continue
+                return _ns(
+                    'pre-push', color,
+                    all_files=True,
+                    remote_branch=remote_ref, local_branch=local_ref, # CENG-1675
+                    remote_name=remote_name, remote_url=remote_url,
+                )
             else:
-                print('has ancestor')
                 first_ancestor = ancestors.splitlines()[0]
                 cmd = ('git', 'rev-list', '--max-parents=0', local_sha)
                 roots = set(subprocess.check_output(cmd).decode().splitlines())
