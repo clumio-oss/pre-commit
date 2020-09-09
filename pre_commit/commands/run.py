@@ -358,7 +358,6 @@ def run(
         environ['PRE_COMMIT_TO_REF'] = args.to_ref
 
     if args.remote_branch and args.local_branch:         # CENG-1675
-        print('set the PRE_COMMIT_REMOTE_REF env variable')
         environ['PRE_COMMIT_REMOTE_REF'] = args.remote_branch
         environ['PRE_COMMIT_LOCAL_REF'] = args.local_branch
 
