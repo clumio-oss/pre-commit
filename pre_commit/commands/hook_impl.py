@@ -107,7 +107,6 @@ def _pre_push_ns(
 
     for line in stdin.decode().splitlines():
         _, local_sha, _, remote_sha = line.split()
-
         if local_sha == Z40:
             continue
         elif remote_sha != Z40 and _rev_exists(remote_sha):
