@@ -56,4 +56,4 @@ repos:
   rev: v0.1.0
   hooks:
   - id: check-branch-for-push
-    args: ['--pattern', '^user/.*']
+    args: ['--pattern', '^user/.*', '--pattern', '^team/.*']
