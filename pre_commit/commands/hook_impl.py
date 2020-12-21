@@ -69,8 +69,6 @@ def _ns(
         color: bool,
         *,
         all_files: bool = False,
-        remote_branch: Optional[str] = None,  # CENG-1675
-        local_branch: Optional[str] = None,   # CENG-1675
         from_ref: Optional[str] = None,
         to_ref: Optional[str] = None,
         remote_name: Optional[str] = None,
@@ -81,8 +79,6 @@ def _ns(
     return argparse.Namespace(
         color=color,
         hook_stage=hook_type.replace('pre-', ''),
-        remote_branch=remote_branch, # CENG-1675
-        local_branch=local_branch,   # CENG-1675
         from_ref=from_ref,
         to_ref=to_ref,
         remote_name=remote_name,
@@ -110,15 +106,14 @@ def _pre_push_ns(
     remote_url = args[1]
 
     for line in stdin.decode().splitlines():
-        local_ref, local_sha, remote_ref, remote_sha = line.split() # CENG-1675
-        
+        _, local_sha, _, remote_sha = line.split()
+
         if local_sha == Z40:
             continue
         elif remote_sha != Z40 and _rev_exists(remote_sha):
             return _ns(
                 'pre-push', color,
                 from_ref=remote_sha, to_ref=local_sha,
-                remote_branch=remote_ref, local_branch=local_ref, # CENG-1675
                 remote_name=remote_name, remote_url=remote_url,
             )
         else:
@@ -128,12 +123,7 @@ def _pre_push_ns(
                 '--not', f'--remotes={remote_name}',
             )).decode().strip()
             if not ancestors:
-                return _ns(
-                    'pre-push', color,
-                    all_files=True,
-                    remote_branch=remote_ref, local_branch=local_ref, # CENG-1675
-                    remote_name=remote_name, remote_url=remote_url,
-                )
+                continue
             else:
                 first_ancestor = ancestors.splitlines()[0]
                 cmd = ('git', 'rev-list', '--max-parents=0', local_sha)
@@ -143,7 +133,6 @@ def _pre_push_ns(
                     return _ns(
                         'pre-push', color,
                         all_files=True,
-                        remote_branch=remote_ref, local_branch=local_ref, # CENG-1675
                         remote_name=remote_name, remote_url=remote_url,
                     )
                 else:
@@ -152,7 +141,6 @@ def _pre_push_ns(
                     return _ns(
                         'pre-push', color,
                         from_ref=source, to_ref=local_sha,
-                        remote_branch=remote_ref, local_branch=local_ref, # CENG-1675
                         remote_name=remote_name, remote_url=remote_url,
                     )
 
