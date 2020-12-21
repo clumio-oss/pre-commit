@@ -52,7 +52,7 @@ repos:
     hooks:
     -   id: check-hooks-apply
     -   id: check-useless-excludes
-- repo: https://github.com/clumio-code/pre-push-hooks
+- repo: https://github.com/surafelabebe/pre-push-hooks-1
   rev: v0.1.0
   hooks:
   - id: check-branch-for-push
